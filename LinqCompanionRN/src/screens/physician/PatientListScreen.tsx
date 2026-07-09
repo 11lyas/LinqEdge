@@ -40,7 +40,7 @@ export default function PatientListScreen({ navigation }: any) {
           <Text style={styles.title}>Patients</Text>
           <View style={styles.roleBadge}>
             <Ionicons name="medkit" size={12} color={colors.purple} />
-            <Text style={styles.roleBadgeText}>Physician View</Text>
+            <Text style={styles.roleBadgeText}>Cardiologist View</Text>
           </View>
         </View>
         <Text style={styles.subtitle}>

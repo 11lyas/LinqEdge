@@ -45,7 +45,7 @@ export default function DashboardScreen({ navigation }: any) {
               <View style={[styles.roleBadge, isPhysician && styles.roleBadgePhysician]}>
                 <Ionicons name={isPhysician ? 'medkit' : 'person'} size={12} color={isPhysician ? colors.purple : colors.medtronicBlue} />
                 <Text style={[styles.roleBadgeText, isPhysician && { color: colors.purple }]}>
-                  {isPhysician ? 'Physician View' : 'Patient View'}
+                  {isPhysician ? 'Cardiologist View' : 'Patient View'}
                 </Text>
               </View>
             </View>

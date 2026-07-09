@@ -133,7 +133,7 @@ function WelcomeStep() {
         {[
           { icon: 'walk',             text: 'Log workouts, symptoms & sleep' },
           { icon: 'link',             text: 'Connect Apple Health, Strava & more' },
-          { icon: 'people',           text: 'Choose patient or physician view' },
+          { icon: 'people',           text: 'Choose patient or cardiologist view' },
           { icon: 'shield-checkmark', text: 'Data stays on your device' },
         ].map(f => (
           <View key={f.text} style={styles.featureRow}>
@@ -302,7 +302,7 @@ function PreferencesStep({
               color={role === r ? colors.medtronicBlue : colors.tertiaryText}
             />
             <Text style={[styles.roleTitle, role === r && { color: colors.medtronicBlue }]}>
-              {r === 'patient' ? 'Patient' : 'Physician'}
+              {r === 'patient' ? 'Patient' : 'Cardiologist'}
             </Text>
             <Text style={styles.roleDesc}>
               {r === 'patient'

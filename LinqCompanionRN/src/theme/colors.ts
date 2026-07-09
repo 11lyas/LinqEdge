@@ -36,6 +36,12 @@ export const colors = {
   systemRed: '#FF3B30',
   systemGreen: '#34C759',
   systemOrange: '#FF9500',
+
+  // ECG strip (clinical paper look)
+  ecgPaper: '#FFF8F8',
+  ecgGridMinor: '#F7E0E0',
+  ecgGridMajor: '#EFC2C2',
+  ecgTrace: '#1C1C1E',
 };
 
 export type ColorKey = keyof typeof colors;

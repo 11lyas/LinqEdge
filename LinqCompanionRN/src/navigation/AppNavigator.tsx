@@ -16,6 +16,8 @@ import LogWorkoutScreen from '../screens/LogWorkoutScreen';
 import LogSymptomScreen from '../screens/LogSymptomScreen';
 import LogSleepScreen   from '../screens/LogSleepScreen';
 import SettingsScreen   from '../screens/SettingsScreen';
+import PatientListScreen   from '../screens/physician/PatientListScreen';
+import PatientDetailScreen from '../screens/physician/PatientDetailScreen';
 
 // ── Param lists ───────────────────────────────────────────────────────────────
 
@@ -42,12 +44,24 @@ export type MainTabParamList = {
   LogTab: undefined;
 };
 
+export type PhysicianStackParamList = {
+  PatientList: undefined;
+  PatientDetail: { patientId: string };
+};
+
+export type PhysicianTabParamList = {
+  PatientsTab: undefined;
+  PhysicianSettingsTab: undefined;
+};
+
 // ── Navigators ────────────────────────────────────────────────────────────────
 
 const Root      = createNativeStackNavigator<RootStackParamList>();
 const Tab       = createBottomTabNavigator<MainTabParamList>();
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 const LogStack  = createNativeStackNavigator<LogStackParamList>();
+const PhysTab   = createBottomTabNavigator<PhysicianTabParamList>();
+const PhysStack = createNativeStackNavigator<PhysicianStackParamList>();
 
 const screenOptions = {
   headerStyle: { backgroundColor: colors.card },
@@ -110,10 +124,60 @@ function MainTabs() {
   );
 }
 
+// ── Physician experience ──────────────────────────────────────────────────────
+
+function PhysicianNavigator() {
+  return (
+    <PhysStack.Navigator screenOptions={screenOptions}>
+      <PhysStack.Screen name="PatientList" component={PatientListScreen} options={{ headerShown: false }} />
+      <PhysStack.Screen name="PatientDetail" component={PatientDetailScreen} options={{ title: 'Patient' }} />
+    </PhysStack.Navigator>
+  );
+}
+
+const PhysSettingsStack = createNativeStackNavigator();
+
+function PhysicianSettingsNavigator() {
+  return (
+    <PhysSettingsStack.Navigator screenOptions={screenOptions}>
+      <PhysSettingsStack.Screen name="PhysicianSettings" component={SettingsScreen} options={{ title: 'Settings' }} />
+    </PhysSettingsStack.Navigator>
+  );
+}
+
+function PhysicianTabs() {
+  return (
+    <PhysTab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: colors.medtronicBlue,
+        tabBarInactiveTintColor: colors.tertiaryText,
+        tabBarStyle: {
+          backgroundColor: colors.card,
+          borderTopColor: colors.separator,
+          paddingBottom: 4,
+          height: 60,
+        },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '500', marginBottom: 4 },
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap = 'people';
+          if      (route.name === 'PatientsTab')          iconName = focused ? 'people'   : 'people-outline';
+          else if (route.name === 'PhysicianSettingsTab') iconName = focused ? 'settings' : 'settings-outline';
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <PhysTab.Screen name="PatientsTab"          component={PhysicianNavigator}         options={{ tabBarLabel: 'Patients' }} />
+      <PhysTab.Screen name="PhysicianSettingsTab" component={PhysicianSettingsNavigator} options={{ tabBarLabel: 'Settings' }} />
+    </PhysTab.Navigator>
+  );
+}
+
 // ── Root navigator ────────────────────────────────────────────────────────────
 
 export default function AppNavigator() {
-  const { onboardingComplete, isLoading } = usePatientData();
+  const { onboardingComplete, isLoading, userProfile } = usePatientData();
+  const isPhysician = userProfile?.role === 'physician';
 
   if (isLoading) {
     return (
@@ -127,7 +191,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Root.Navigator screenOptions={{ headerShown: false }}>
         {onboardingComplete ? (
-          <Root.Screen name="Main" component={MainTabs} />
+          <Root.Screen name="Main" component={isPhysician ? PhysicianTabs : MainTabs} />
         ) : (
           <Root.Screen name="Onboarding" component={OnboardingScreen} />
         )}

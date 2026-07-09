@@ -57,7 +57,7 @@ export default function SettingsScreen({ navigation }: any) {
           onPress: async () => {
             await AsyncStorage.multiRemove(['lc_workouts', 'lc_symptoms', 'lc_sleep']);
             Alert.alert('Data Deleted', 'All logged data has been removed.', [
-              { text: 'OK', onPress: () => navigation.goBack() },
+              { text: 'OK', onPress: () => { if (navigation.canGoBack()) navigation.goBack(); } },
             ]);
           },
         },
@@ -71,7 +71,7 @@ export default function SettingsScreen({ navigation }: any) {
       'This will replace your current logged data with sample demo data. Continue?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Load Demo Data', onPress: () => { resetToDemo(); navigation.goBack(); } },
+        { text: 'Load Demo Data', onPress: () => { resetToDemo(); if (navigation.canGoBack()) navigation.goBack(); } },
       ]
     );
   };

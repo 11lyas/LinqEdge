@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "LINQ Companion",
+    "slug": "linq-companion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0071CE",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.medtronic.linqcompanion",
+      "infoPlist": {
+        "NSHealthShareUsageDescription": "This app uses health context data you enter manually. No data is read from HealthKit in this prototype.",
+        "NSHealthUpdateUsageDescription": "This app does not write to HealthKit in this prototype."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0071CE"
+      },
+      "package": "com.medtronic.linqcompanion"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

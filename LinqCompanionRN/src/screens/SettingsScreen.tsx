@@ -126,7 +126,7 @@ export default function SettingsScreen({ navigation }: any) {
                 color={role === r ? colors.medtronicBlue : colors.tertiaryText}
               />
               <Text style={[styles.roleTitle, role === r && { color: colors.medtronicBlue }]}>
-                {r === 'patient' ? 'Patient' : 'Physician'}
+                {r === 'patient' ? 'Patient' : 'Cardiologist'}
               </Text>
               <Text style={styles.roleDesc}>
                 {r === 'patient' ? 'Simplified, friendly view' : 'Detailed clinical data view'}

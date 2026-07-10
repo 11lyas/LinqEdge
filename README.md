@@ -81,3 +81,5 @@ Because LinqEdge uses healthcare-related data, the system is designed around pri
 - Improve risk scoring and alert accuracy
 - Expand edge compute device support
 - Expand compliance documentation
+- Making the device comptaible with more products
+- 

@@ -8,8 +8,9 @@ by the correlation layer.
 
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class Audience(str, Enum):
@@ -38,7 +39,7 @@ class Finding(BaseModel):
         ge=0,
         description="Number of underlying data points supporting this finding (for traceability).",
     )
-    strength: str | None = Field(
+    strength: Optional[str] = Field(
         default=None,
         description="Optional qualitative strength label such as weak, moderate, or notable.",
     )
@@ -57,6 +58,13 @@ class SummaryRequest(BaseModel):
         default_factory=list,
         description="Structured findings from the correlation layer.",
     )
+
+    @model_validator(mode="after")
+    def validate_reporting_period(self) -> "SummaryRequest":
+        """Require a reporting period with a positive duration."""
+        if self.period_end <= self.period_start:
+            raise ValueError("period_end must be later than period_start")
+        return self
 
 
 class SummaryResponse(BaseModel):

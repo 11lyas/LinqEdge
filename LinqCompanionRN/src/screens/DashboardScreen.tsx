@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { usePatientData, formatRelative } from '../context/PatientDataContext';
 import { sleepQualityColor } from '../models/types';
+import WeeklyOverviewCard from '../components/WeeklyOverviewCard';
 
 export default function DashboardScreen({ navigation }: any) {
   const {
@@ -99,6 +100,15 @@ export default function DashboardScreen({ navigation }: any) {
             color={colors.cyan}
           />
         </View>
+
+        {/* Seven-day overview */}
+        <Text style={styles.sectionTitle}>Your Week</Text>
+        <WeeklyOverviewCard
+          workouts={workoutSessions}
+          symptoms={symptomEntries}
+          sleepEntries={sleepEntries}
+          onViewTimeline={() => navigation.getParent()?.navigate('TimelineTab')}
+        />
 
         {/* Quick Log */}
         <Text style={styles.sectionTitle}>Quick Log</Text>

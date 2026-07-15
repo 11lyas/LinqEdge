@@ -76,8 +76,8 @@ Content-Type: application/json
 
 {
   "audience": "patient",
-  "period_start": "2026-06-25T00:00:00",
-  "period_end": "2026-07-09T00:00:00",
+  "period_start": "2026-06-25T00:00:00Z",
+  "period_end": "2026-07-09T00:00:00Z",
   "findings": [
     {
       "statement": "Symptoms were logged on 4 of 5 days that followed a poor-sleep night.",

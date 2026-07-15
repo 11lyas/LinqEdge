@@ -6,11 +6,10 @@ clinical conclusions; it only rephrases deterministic findings produced upstream
 by the correlation layer.
 """
 
-from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import AwareDatetime, BaseModel, Field, model_validator
 
 
 class Audience(str, Enum):
@@ -52,8 +51,14 @@ class SummaryRequest(BaseModel):
         default=Audience.patient,
         description="Whether to write for a patient or a clinician.",
     )
-    period_start: datetime = Field(..., description="Start of the reporting period.")
-    period_end: datetime = Field(..., description="End of the reporting period.")
+    period_start: AwareDatetime = Field(
+        ...,
+        description="Start of the reporting period, including a UTC offset.",
+    )
+    period_end: AwareDatetime = Field(
+        ...,
+        description="End of the reporting period, including a UTC offset.",
+    )
     findings: list[Finding] = Field(
         default_factory=list,
         description="Structured findings from the correlation layer.",

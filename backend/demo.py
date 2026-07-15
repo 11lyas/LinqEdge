@@ -7,7 +7,7 @@ Usage:
     python demo.py
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.config import get_settings
 from app.genai_service import generate_summary
@@ -46,7 +46,7 @@ def main() -> None:
         )
         return
 
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     request = SummaryRequest(
         audience=Audience.patient,
         period_start=now - timedelta(days=14),

@@ -41,5 +41,5 @@ def create_summary(request: SummaryRequest) -> SummaryResponse:
     except OpenAIError as exc:
         raise HTTPException(
             status_code=502,
-            detail=f"Azure OpenAI request failed: {exc}",
+            detail="The summary service is temporarily unavailable.",
         ) from exc

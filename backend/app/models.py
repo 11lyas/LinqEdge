@@ -9,7 +9,13 @@ by the correlation layer.
 from enum import Enum
 from typing import Optional
 
-from pydantic import AwareDatetime, BaseModel, Field, model_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
+
+
+MAX_FINDINGS = 50
+MAX_FINDING_STATEMENT_LENGTH = 1_000
+MAX_FINDING_CATEGORY_LENGTH = 64
+MAX_FINDING_STRENGTH_LENGTH = 32
 
 
 class Audience(str, Enum):
@@ -25,12 +31,18 @@ class Finding(BaseModel):
     Findings are the *only* factual basis the GenAI layer is allowed to use.
     """
 
+    model_config = ConfigDict(str_strip_whitespace=True)
+
     statement: str = Field(
         ...,
+        min_length=1,
+        max_length=MAX_FINDING_STATEMENT_LENGTH,
         description="Deterministic finding text, e.g. 'Symptoms were logged on 4 of 5 poor-sleep days.'",
     )
     category: str = Field(
         ...,
+        min_length=1,
+        max_length=MAX_FINDING_CATEGORY_LENGTH,
         description="Context category such as sleep, exercise, symptom, stress, hydration.",
     )
     supporting_events: int = Field(
@@ -40,6 +52,8 @@ class Finding(BaseModel):
     )
     strength: Optional[str] = Field(
         default=None,
+        min_length=1,
+        max_length=MAX_FINDING_STRENGTH_LENGTH,
         description="Optional qualitative strength label such as weak, moderate, or notable.",
     )
 
@@ -61,6 +75,7 @@ class SummaryRequest(BaseModel):
     )
     findings: list[Finding] = Field(
         default_factory=list,
+        max_length=MAX_FINDINGS,
         description="Structured findings from the correlation layer.",
     )
 

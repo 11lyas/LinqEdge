@@ -238,7 +238,7 @@ const eventContexts: Record<string, EventContext> = {
   'p3-evt-1': {
     eventId: 'p3-evt-1', stepsPrior30Min: 85, activityLevel: 'Light',
     heartRateAtEvent: 38, hrvAtEvent: 27, sleepLastNightHours: 5.3, sleepLastNightQuality: 45,
-    wearableInsight: 'HR failed to rise on waking/standing (38-42 bpm); wearable flagged possible chronotropic incompetence pattern.',
+    wearableInsight: 'Wearable HR readings remained between 38 and 42 bpm around waking and standing.',
   },
   'p3-evt-2': {
     eventId: 'p3-evt-2', stepsPrior30Min: 0, activityLevel: 'Resting',
@@ -248,12 +248,12 @@ const eventContexts: Record<string, EventContext> = {
   'p4-evt-1': {
     eventId: 'p4-evt-1', stepsPrior30Min: 2100, activityLevel: 'Vigorous',
     heartRateAtEvent: 156, hrvAtEvent: 22, sleepLastNightHours: 7.0, sleepLastNightQuality: 74,
-    wearableInsight: 'Occurred during a spin class; HR exceeded age-predicted threshold and stayed >150 bpm for 5 min after cooldown began.',
+    wearableInsight: 'Occurred during a spin class; HR remained above 150 bpm for 5 min after cooldown began.',
   },
   'p4-evt-2': {
     eventId: 'p4-evt-2', stepsPrior30Min: 1800, activityLevel: 'Vigorous',
     heartRateAtEvent: 149, hrvAtEvent: 24, sleepLastNightHours: 7.1, sleepLastNightQuality: 76,
-    wearableInsight: 'Delayed HR recovery: only −18 bpm in the first 2 minutes post-exercise (expected >25 bpm).',
+    wearableInsight: 'HR decreased by 18 bpm during the first 2 minutes after exercise.',
   },
   'p5-evt-1': {
     eventId: 'p5-evt-1', stepsPrior30Min: 300, activityLevel: 'Light',
@@ -273,12 +273,12 @@ const eventContexts: Record<string, EventContext> = {
   'p7-evt-1': {
     eventId: 'p7-evt-1', stepsPrior30Min: 2600, activityLevel: 'Vigorous',
     heartRateAtEvent: 138, hrvAtEvent: 58, sleepLastNightHours: 7.4, sleepLastNightQuality: 81,
-    wearableInsight: 'Appropriate sinus tachycardia during interval training; normal HR recovery (−32 bpm in 2 min).',
+    wearableInsight: 'HR increased during interval training and decreased by 32 bpm in the first 2 minutes afterward.',
   },
   'p8-evt-1': {
     eventId: 'p8-evt-1', stepsPrior30Min: 0, activityLevel: 'Resting',
     heartRateAtEvent: 44, hrvAtEvent: 54, sleepLastNightHours: 7.9, sleepLastNightQuality: 83,
-    wearableInsight: 'Early-morning bradycardia consistent with high baseline fitness; asymptomatic, stable weekly pattern.',
+    wearableInsight: 'Early-morning HR was below 50 bpm; no symptom was logged, and similar readings appeared during the week.',
   },
 };
 

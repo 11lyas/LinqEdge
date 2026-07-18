@@ -111,8 +111,8 @@ function buildMockSummary(input: SummaryInput): ClinicalSummary {
     parts.push(context.wearableInsight);
   }
 
-  // Likely-context conclusion.
-  parts.push(conclusionFor(event, context, near.length > 0));
+  // Descriptive context only. Do not infer cause, mechanism, severity, or risk.
+  parts.push(contextStatementFor(event, context));
 
   return {
     text: parts.join(' '),
@@ -121,43 +121,52 @@ function buildMockSummary(input: SummaryInput): ClinicalSummary {
   };
 }
 
-function conclusionFor(event: CardiacEvent, context: EventContext | undefined, hasSymptoms: boolean): string {
+function contextStatementFor(event: CardiacEvent, context: EventContext | undefined): string {
   const exertional = context && (context.activityLevel === 'Moderate' || context.activityLevel === 'Vigorous');
   const resting = context?.activityLevel === 'Resting';
   const poorSleep = context !== undefined && context.sleepLastNightHours < 6;
 
-  let base: string;
+  let activityStatement: string;
   switch (event.type) {
     case 'AFib Episode':
-      base = exertional
-        ? 'The episode may be associated with physical exertion'
-        : 'The episode occurred without a clear exertional trigger';
-      if (poorSleep) base += ', potentially compounded by poor sleep the prior night';
+      activityStatement = exertional
+        ? 'The episode occurred during moderate or vigorous activity.'
+        : context
+          ? 'The available activity data did not show moderate or vigorous activity near the episode.'
+          : 'No activity context was available for this episode.';
       break;
     case 'Pause':
-      base = resting
-        ? 'The pause occurred during rest/sleep, consistent with a nocturnal, possibly vagally mediated mechanism'
-        : 'The pause occurred outside of sleep, which may warrant closer review';
+      activityStatement = resting
+        ? 'The pause occurred while the available activity data indicated rest.'
+        : context
+          ? 'The available activity data did not indicate rest near the pause.'
+          : 'No activity context was available for this pause.';
       break;
     case 'Tachycardia Event':
-      base = exertional
-        ? 'The rate elevation coincided with vigorous activity and may represent an exaggerated exertional response'
-        : 'The rate elevation occurred without matching activity, suggesting a non-exertional trigger';
+      activityStatement = exertional
+        ? 'The rate elevation occurred during moderate or vigorous activity.'
+        : context
+          ? 'The available activity data did not show moderate or vigorous activity near the rate elevation.'
+          : 'No activity context was available for this rate elevation.';
       break;
     case 'Bradycardia Event':
-      base = resting
-        ? 'The slow rate occurred at rest and may be benign, though the pattern should be reviewed against symptoms'
-        : 'The slow rate during activity suggests an inadequate chronotropic response';
+      activityStatement = resting
+        ? 'The slow rate occurred while the available activity data indicated rest.'
+        : context
+          ? 'The available activity data did not indicate rest near the slow rate.'
+          : 'No activity context was available for this slow rate.';
       break;
     default:
-      base = 'The ectopy burden appears situational';
+      activityStatement = context
+        ? `The event occurred while the available activity data indicated ${context.activityLevel.toLowerCase()} activity.`
+        : 'No activity context was available for this event.';
   }
 
-  const symptomClause = hasSymptoms
-    ? ' Correlated patient-reported symptoms increase the clinical significance of this event.'
-    : ' The absence of correlated symptoms lowers immediate concern, but the trend should be monitored.';
+  const sleepStatement = poorSleep
+    ? ' Sleep logged for the prior night was under six hours.'
+    : '';
 
-  return base + '.' + symptomClause;
+  return activityStatement + sleepStatement;
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────

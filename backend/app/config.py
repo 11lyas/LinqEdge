@@ -41,7 +41,11 @@ class Settings(BaseSettings):
         a full target URL such as `.../openai/v1/responses`) and normalizes it
         to `https://<host>/openai/v1/`.
         """
-        parts = urlsplit(self.azure_openai_endpoint)
+        endpoint = self.azure_openai_endpoint.strip()
+        if "://" not in endpoint:
+            endpoint = f"https://{endpoint}"
+
+        parts = urlsplit(endpoint)
         return f"{parts.scheme}://{parts.netloc}/openai/v1/"
 
 

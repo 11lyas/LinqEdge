@@ -96,7 +96,13 @@ class SummaryResponse(BaseModel):
         default_factory=list,
         description="Safety disclaimers attached to every summary.",
     )
-    model: str = Field(..., description="The Azure deployment used to generate the summary.")
+    model: Optional[str] = Field(
+        default=None,
+        description=(
+            "The Azure deployment used to generate the summary, or null when "
+            "the response was produced without a model call."
+        ),
+    )
 
 
 class HealthResponse(BaseModel):

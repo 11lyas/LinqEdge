@@ -89,6 +89,9 @@ Content-Type: application/json
 }
 ```
 
+Requests with an empty `findings` list return a deterministic no-findings
+summary without contacting Azure; the response's `model` field is `null`.
+
 ## Safety
 
 Every summary is generated under a system prompt that forbids diagnosis,

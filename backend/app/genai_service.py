@@ -9,6 +9,10 @@ from .config import get_settings
 from .models import SummaryRequest, SummaryResponse
 from .prompts import DISCLAIMERS, SYSTEM_PROMPT, build_user_prompt
 
+NO_FINDINGS_SUMMARY = (
+    "No structured findings were provided for this reporting period."
+)
+
 
 def generate_summary(request: SummaryRequest) -> SummaryResponse:
     """Generate a non-diagnostic, plain-language summary for a set of findings.
@@ -23,6 +27,14 @@ def generate_summary(request: SummaryRequest) -> SummaryResponse:
         AzureNotConfiguredError: if Azure credentials are missing.
         openai.OpenAIError: if the Azure request fails.
     """
+    if not request.findings:
+        return SummaryResponse(
+            summary=NO_FINDINGS_SUMMARY,
+            audience=request.audience,
+            disclaimers=DISCLAIMERS,
+            model=None,
+        )
+
     settings = get_settings()
     client = get_azure_client()
 
